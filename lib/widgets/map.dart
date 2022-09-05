@@ -55,13 +55,13 @@ class MapSampleState extends State<MapSample> {
             height: 130,
             child: Column(
               children: [TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Enter location",
               labelText: "Enter Destination",
             ),
           ),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Enter location",
               labelText: "Enter current location",
             ),)],
