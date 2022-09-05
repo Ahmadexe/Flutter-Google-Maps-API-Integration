@@ -79,7 +79,8 @@ class MapSampleState extends State<MapSample> {
                 ),
                 IconButton(
                     onPressed: () async {
-                      var place = await Places().getPlace(current.text.toString());
+                      var place =
+                          await Places().getPlace(current.text.toString());
                     },
                     icon: Icon(CupertinoIcons.search))
               ],
