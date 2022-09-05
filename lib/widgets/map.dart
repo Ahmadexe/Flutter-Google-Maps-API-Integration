@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_app/api/places_api.dart';
+
 class MapSample extends StatefulWidget {
   const MapSample({super.key});
 
@@ -35,42 +38,57 @@ class MapSampleState extends State<MapSample> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue));
 
   static const Polyline _kPolyLine = Polyline(
-    polylineId: PolylineId('MyPolyLine'),
-    points: [LatLng(37.42796133580664, -122.085749655962),
-    LatLng(33.651592, 73.156456)
-    ],
-    width: 5
-  );
+      polylineId: PolylineId('MyPolyLine'),
+      points: [
+        LatLng(37.42796133580664, -122.085749655962),
+        LatLng(33.651592, 73.156456)
+      ],
+      width: 5);
+
+  late TextEditingController current;
+  @override
+  void initState() {
+    current = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Map App"),
-
       ),
       body: Column(
         children: [
           Container(
-            height: 130,
+            height: 175,
             child: Column(
-              children: [TextFormField(
-            decoration: const InputDecoration(
-              hintText: "Enter location",
-              labelText: "Enter Destination",
-            ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: "Enter location",
-              labelText: "Enter current location",
-            ),)],
+              children: [
+                TextFormField(
+                  controller: current,
+                  decoration: const InputDecoration(
+                    hintText: "Enter location",
+                    labelText: "Enter current location",
+                  ),
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: "Enter location",
+                    labelText: "Enter Destination",
+                  ),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      var place = await Places().getPlace(current.text.toString());
+                    },
+                    icon: Icon(CupertinoIcons.search))
+              ],
             ),
           ),
           Expanded(
             child: GoogleMap(
               mapType: MapType.normal,
-              markers: {_kLakeMarker,_kGooglePlexMarker},
+              markers: {_kLakeMarker, _kGooglePlexMarker},
               initialCameraPosition: _kGooglePlex,
               polylines: {_kPolyLine},
               onMapCreated: (GoogleMapController controller) {
