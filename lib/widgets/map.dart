@@ -10,7 +10,7 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -45,14 +45,40 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        markers: {_kLakeMarker,_kGooglePlexMarker},
-        initialCameraPosition: _kGooglePlex,
-        polylines: {_kPolyLine},
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      appBar: AppBar(
+        title: Text("Map App"),
+
+      ),
+      body: Column(
+        children: [
+          Container(
+            height: 130,
+            child: Column(
+              children: [TextFormField(
+            decoration: InputDecoration(
+              hintText: "Enter location",
+              labelText: "Enter Destination",
+            ),
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "Enter location",
+              labelText: "Enter current location",
+            ),)],
+            ),
+          ),
+          Expanded(
+            child: GoogleMap(
+              mapType: MapType.normal,
+              markers: {_kLakeMarker,_kGooglePlexMarker},
+              initialCameraPosition: _kGooglePlex,
+              polylines: {_kPolyLine},
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
