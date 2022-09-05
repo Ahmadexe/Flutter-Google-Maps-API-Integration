@@ -23,12 +23,17 @@ class MapSample extends StatefulWidget {
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
-  static final CameraPosition _kLake = CameraPosition(
+  final Marker _kGooglePlexMarker = const Marker(
+      infoWindow: InfoWindow(title: "My Marker"),
+      position: LatLng(37.42796133580664, -122.085749655962),
+      markerId: MarkerId('_KGooglePlexMarker'));
+
+  static const CameraPosition _kLake = CameraPosition(
       bearing: 210.8334901395799,
       target: LatLng(33.651592, 73.156456),
       tilt: 70.440717697143555,
@@ -36,9 +41,10 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: GoogleMap(
-        mapType: MapType.satellite,
+        mapType: MapType.normal,
+        markers: {_kGooglePlexMarker},
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -46,8 +52,8 @@ class MapSampleState extends State<MapSample> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
+        label: const Text('To the lake!'),
+        icon: const Icon(Icons.directions_boat),
       ),
     );
   }
